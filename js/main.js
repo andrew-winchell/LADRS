@@ -1267,7 +1267,7 @@ require([
         let oid,
             selectedFeature,
             editor,
-            multipointVertices,
+            multipointVertices = [],
             userLineColor;
 
         //#endregion
@@ -1375,5 +1375,51 @@ require([
         });
 
         //#endregion
+   
+        //#region Create New Route
+   
+        const pointSketchViewModel = new SketchViewModel ({
+            layer: pointGraphicsLyr,
+            view: mapView,
+            pointSymbol: {
+                type: "simple-marker",
+                style: "circle",
+                color: "blue",
+                size: "8px"
+            },
+            snappingOptions: {
+                enabled: true,
+                featureSources: [
+                    {
+                        layer: navaidsLyr,
+                        enabled: true
+                    },
+                    {
+                        layer: fixesLyr,
+                        enabled: true
+                    },
+                    {
+                        layer: airportsLyr,
+                        enabled: true
+                    },
+                    {
+                        layer: vertiportsLyr,
+                        enabled: true
+                    }
+                ]
+            },
+            labelOptions: { enabled: true },
+            tooltipOptions: { enabled: true }
+        });
+
+        // Open Creator Toolbar
+        $("#create-route").on("click", () => {
+            $("#route-toolbar").css("display", "block");
+            $("#color-picker-panel").css("display", "grid");
+            multipointVertices = [];
+            elevationProfile.input = null;
+            $("#waypoint-list").css("display", "none");
+            mapView.popup.close();
+        });
     }
 )
