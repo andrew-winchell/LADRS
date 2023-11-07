@@ -42,7 +42,7 @@ require([
         //#region ArcGIS Online User Authentication
 
         const info = new OAuthInfo({
-            appId: "VciB4pGjVFKkH1Og",
+            appId: "aKPEKesRDLD9a30U",
             portalUrl: "https://cobecconsulting.maps.arcgis.com",
             authNamespace: "portal_oauth_inline",
             flowType: "auto",
