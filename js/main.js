@@ -494,7 +494,7 @@ require([
                     }
                 ]
             },
-            definitionExpression: "Program = 'Archer'"
+            definitionExpression: "1=0"
         });
 
         //#endregion
