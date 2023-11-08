@@ -1838,7 +1838,7 @@ require([
         });
 
         existingRoutesLyr.on("apply-edits", (e) => {
-            existingRoutesLyr.when(() => {
+            e.when(() => {
                 if (e.edits.deleteFeatures) {
                     editor.viewModel.cancelWorkflow();
                     mapView.ui.remove(editor);
