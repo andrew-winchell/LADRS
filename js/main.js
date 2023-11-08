@@ -1617,6 +1617,8 @@ require([
                     pointGraphicsLyr.removeAll();
 
                     pointSketchViewModel.cancel();
+
+                    routeBuffer.removeAll();
                 });
         });
 
