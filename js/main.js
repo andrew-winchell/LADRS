@@ -1823,7 +1823,7 @@ require([
 
             console.log(table,rows)
 
-            for (i=1, j=rows.length; i<j; ++i) {
+            for (i=0, j=rows.length; i<j; ++i) {
                 cells = rows[i].cells;
             
                 let long = cells[1].innerHTML,
