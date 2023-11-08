@@ -1838,7 +1838,16 @@ require([
         });
 
         existingRoutesLyr.on("edits", (e) => {
-            console.log(e)
+            if (e.deletedFeatures) {
+                editor.viewModel.cancelWorkflow();
+                mapView.ui.remove(editor);
+                // Delete the current list of existing routes
+                $("#existing-routes").empty();
+                // Repopulate existing routes list with new values after 1 second delay
+                setTimeout(()=> {
+                    populateExistingRoutes();
+                }, 10);
+            }
         })
 
         $("#save-vertices").on("click", () => {
