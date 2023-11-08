@@ -1590,5 +1590,21 @@ require([
             mapView.graphics.add(graphic);
             elevationProfile.input = graphic;
         }
-    }
+
+        $("#complete-route").on("click", (e) => {
+            e.currentTarget.disabled = true;
+            pointSketchViewModel.complete();
+            $("#save")[0].disabled = false;
+            $("#edit-vertices")[0].disabled = true;
+            $("#cancel-vertices")[0].disabled = true;
+        });
+
+        // Open Save Route modal to enter attributes and push route to layer
+        $("#save").on("click", () => {
+            $("#route-save-modal")[0].open = true;
+        });
+
+    } 
+
+
 )
