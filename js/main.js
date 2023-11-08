@@ -1236,9 +1236,10 @@ require([
 
         $("#existing-routes").on("calciteListItemSelect", (e) => {
             oid = parseInt(e.target.value);
+            let routeSelected = e.target.selected;
             let selectedArr = [];
 
-            updateRouteRenderer(oid);
+            updateRouteRenderer(oid, routeSelected);
 
             for (let i of e.currentTarget.selectedItems) {
                 selectedArr.push(i.value);
@@ -1250,9 +1251,8 @@ require([
             existingRoutesLyr.definitionExpression = "Program = 'Archer' AND OBJECTID IN (" + itemString + ")";
         });
 
-        function updateRouteRenderer (objectId) {
+        function updateRouteRenderer (objectId, routeSelected) {
             let routeColor, geom, routeBufferName;
-            let routeSelected = e.target.selected;
 
             // Query routes for matching OID
             existingRoutesLyr.queryFeatures(
@@ -1596,7 +1596,7 @@ require([
                     oid = r.addFeatureResults[0].objectId;
 
                     updateRouteRenderer(oid);
-                    
+
                     let selectedArr = [oid];
 
                     for (let i of $("#existing-routes")[0].selectedItems) {
