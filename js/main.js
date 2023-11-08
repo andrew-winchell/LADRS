@@ -1269,7 +1269,7 @@ require([
                 if (routeSelected == true) {
                     existingRoutesLyr.renderer.addUniqueValueInfo(
                         {
-                            label: objectId,
+                            label: routeBufferName,
                             value: objectId,
                             symbol: {
                                 type: "simple-line",
