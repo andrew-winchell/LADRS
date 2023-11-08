@@ -1863,7 +1863,7 @@ require([
                 };
                 mapView.graphics.add(polylineGraphic);
         
-                supernalRoutesLyr
+                existingRoutesLyr
                     .applyEdits(edits)
                     .then(() => { 
                         drawPath(selectedFeature.geometry.paths);
@@ -1875,13 +1875,13 @@ require([
                             returnZ: true
                         };
             
-                        supernalRoutesLyr.queryFeatures(query)
-                            .then((results) => {
-                                selectedFeature = results.features[0];
+                        existingRoutesLyr.queryFeatures(query)
+                            .then((r) => {
+                                selectedFeature = r.features[0];
                                 mapView
                                     .goTo(selectedFeature.geometry.extent.expand(2))
                                     .then(() => {
-                                        supernalRoutesLyr.definitionExpression = "OBJECTID = " + objectId;
+                                        existingRoutesLyr.definitionExpression = "Program = 'Archer' AND OBJECTID = " + objectId;
                                         $("#waypoint-list").css("display", "block");
                                         selectedFeatureTable(selectedFeature.geometry.paths);
                                         selectedFeatureProfile(selectedFeature.geometry.paths);
