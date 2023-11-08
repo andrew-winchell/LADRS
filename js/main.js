@@ -1719,6 +1719,63 @@ require([
             }
         }
 
+        //#endregion
+
+        //#region Edit Existing Route
+
+        reactiveUtils.on(
+            () => mapView.popup,
+            "trigger-action",
+            (e) => {
+                if (e.action.id === "edit-attributes") {
+                    $("#save-vertices").css("display", "block");
+                    
+                    editRouteAttributes();
+
+                    editRoutePath();
+                }
+            }
+        );
+
+        mapView.when(() => {
+            editor = new Editor ({
+                view: mapView,
+                visibleElements: {
+                    snappingControls: false,
+                    sketchTooltipControls: false
+                },
+                container: document.createElement("div"),
+                layerInfos: [
+                    {
+                        layer: existingRoutesLyr,
+                        formTemplate: {
+                            title: "Route Attributes",
+                            description: "Enter or Modify all route attributes below.",
+                            elements: [
+                                {
+                                    type: "field",
+                                    fieldName: "route_name",
+                                    label: "Route Name"
+                                },
+                                {
+                                    type: "field",
+                                    fieldName: "departing_fac",
+                                    label: "Departing Facility"
+                                },
+                                {
+                                    type: "field",
+                                    fieldName: "arriving_fac",
+                                    label: "Arriving Facility"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            })
+        });
+
+        //#endregion
+
     } 
 
 
