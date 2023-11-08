@@ -1847,6 +1847,14 @@ require([
                 setTimeout(()=> {
                     populateExistingRoutes();
                 }, 10);
+
+                console.log(e.deletedFeatures)
+
+                // Find the graphic for the route that was deslected and remove the corresponding buffer
+                //let removeGraphic = routeBuffer.graphics.find((g) => {
+                //    return g.attributes.route === routeBufferName;
+                //});
+                //routeBuffer.remove(removeGraphic);
             }
         })
 
