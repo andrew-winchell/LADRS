@@ -1595,7 +1595,7 @@ require([
 
                     oid = r.addFeatureResults[0].objectId;
 
-                    updateRouteRenderer(oid);
+                    updateRouteRenderer(oid, true);
 
                     let selectedArr = [oid];
 
