@@ -1821,6 +1821,8 @@ require([
                 newVertices = [],
                 i, j, cells;
 
+            console.log(table,rows)
+
             for (i=0, j=rows.length; i<j; ++i) {
                 cells = rows[i].getElementByTagName("td");
                 if (!cells.length) {
