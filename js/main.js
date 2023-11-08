@@ -1786,6 +1786,27 @@ require([
                     snappingControls: false,
                     sketchTooltipControls: false
                 },
+                snappingOptions: {
+                    enabled: true,
+                    featureSources: [
+                        {
+                            layer: navaidsLyr,
+                            enabled: true
+                        },
+                        {
+                            layer: fixesLyr,
+                            enabled: true
+                        },
+                        {
+                            layer: airportsLyr,
+                            enabled: true
+                        },
+                        {
+                            layer: vertiportsLyr,
+                            enabled: true
+                        }
+                    ]
+                },
                 container: document.createElement("div"),
                 layerInfos: [
                     {
@@ -1816,7 +1837,7 @@ require([
             })
         });
 
-        existingRoutesLyr.on("edits", (e) => {
+        existingRoutesLyr.on("apply-edits", (e) => {
             console.log(e);
         });
 
