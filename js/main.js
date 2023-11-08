@@ -1100,27 +1100,27 @@ require([
             appConfig.activeView.container = null;
         
             if (is3D) {
-            appConfig.mapView.viewpoint = activeViewpoint;
-            appConfig.mapView.container = appConfig.container;
-            map.basemap = "gray-vector";
-            to2DSymbology();
-            appConfig.activeView = appConfig.mapView;
-            $("#elevation-profile").css("display", "block");
-            $("#elevation-profile3d").css("display", "none");
-            $("#create-route").css("display", "block")
+                appConfig.mapView.viewpoint = activeViewpoint;
+                appConfig.mapView.container = appConfig.container;
+                map.basemap = "gray-vector";
+                to2DSymbology();
+                appConfig.activeView = appConfig.mapView;
+                $("#elevation-profile").css("display", "block");
+                $("#elevation-profile3d").css("display", "none");
+                $("#create-route").css("display", "block")
             } else {
-            appConfig.sceneView.viewpoint = activeViewpoint;
-            appConfig.sceneView.container = appConfig.container;
-            map.basemap = new Basemap({
-                portalItem: {
-                    id: "0560e29930dc4d5ebeb58c635c0909c9"
-                }
-            });
-            to3DSymbology();
-            appConfig.activeView = appConfig.sceneView;
-            $("#elevation-profile").css("display", "none");
-            $("#elevation-profile3d").css("display", "block");
-            $("#create-route").css("display", "none")
+                appConfig.sceneView.viewpoint = activeViewpoint;
+                appConfig.sceneView.container = appConfig.container;
+                map.basemap = new Basemap({
+                    portalItem: {
+                        id: "0560e29930dc4d5ebeb58c635c0909c9"
+                    }
+                });
+                to3DSymbology();
+                appConfig.activeView = appConfig.sceneView;
+                $("#elevation-profile").css("display", "none");
+                $("#elevation-profile3d").css("display", "block");
+                $("#create-route").css("display", "none")
             }
         }
 
@@ -1134,36 +1134,6 @@ require([
                         color: [0,0,0,1],
                         width: "1px"
                     }
-                }
-            };
-
-            fiveDegRingLyr.renderer = {
-                type: "simple",
-                symbol: {
-                    type: "simple-line",
-                    color: "red",
-                    width: "2px",
-                    style: "solid"
-                }
-            };
-            
-            eightDegRingLyr.renderer = {
-                type: "simple",
-                symbol: {
-                    type: "simple-line",
-                    color: "blue",
-                    width: "2px",
-                    style: "solid"
-                }
-            };
-
-            twelveDegRingLyr.renderer = {
-                type: "simple",
-                symbol: {
-                    type: "simple-line",
-                    color: "green",
-                    width: "2px",
-                    style: "solid"
                 }
             };
         }
@@ -1193,48 +1163,6 @@ require([
                         units: "feet"
                     }
                 ]
-            };
-
-            fiveDegRingLyr.renderer = {
-                type: "simple",
-                symbol: {
-                    type: "line-3d",
-                    symbolLayers: [{
-                        type: "path",
-                        profile: "quad",
-                        width: 50,
-                        height: 400,
-                        material: { color: [255, 0, 0, 0.25] }
-                    }]
-                }
-            };
-
-            eightDegRingLyr.renderer = {
-                type: "simple",
-                symbol: {
-                    type: "line-3d",
-                    symbolLayers: [{
-                        type: "path",
-                        profile: "quad",
-                        width: 50,
-                        height: 400,
-                        material: { color: [0, 0, 255, 0.25] }
-                    }]
-                }
-            };
-
-            twelveDegRingLyr.renderer = {
-                type: "simple",
-                symbol: {
-                    type: "line-3d",
-                    symbolLayers: [{
-                        type: "path",
-                        profile: "quad",
-                        width: 50,
-                        height: 400,
-                        material: { color: [0, 255, 0, 0.25] }
-                    }]
-                }
             };
         }
 
