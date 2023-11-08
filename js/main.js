@@ -555,6 +555,13 @@ require([
             container: "inset-div"
         });
 
+        const appConfig = {
+            mapView: mapView,
+            sceneView: sceneView,
+            activeView: mapView,
+            container: "view-div"
+        };
+
         //#endregion
 
         //#region Layer Filters
