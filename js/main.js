@@ -1554,7 +1554,7 @@ require([
             let mapPt = multipoint.getPoint(0);
 
             let nextRow = $("#waypoint-table tbody")[0].insertRow(-1);
-            let nextVert = newRow.insertCell(0);
+            let nextVert = nextRow.insertCell(0);
             let nextX = nextRow.insertCell(1);
             let nextY = nextRow.insertCell(2);
             let nextZ = nextRow.insertCell(3);
