@@ -1614,7 +1614,7 @@ require([
 
                     multipointVertices = [];
 
-                    pntGraphicsLyr.removeAll();
+                    pointGraphicsLyr.removeAll();
 
                     pointSketchViewModel.cancel();
                 });
