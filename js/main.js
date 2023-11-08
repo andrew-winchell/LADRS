@@ -1838,7 +1838,7 @@ require([
         });
 
         existingRoutesLyr.on("edits", (e) => {
-            if (e.deletedFeatures) {
+            if (e.deletedFeatures.length > 0) {
                 editor.viewModel.cancelWorkflow();
                 mapView.ui.remove(editor);
                 // Delete the current list of existing routes
