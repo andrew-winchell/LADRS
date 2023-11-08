@@ -1838,10 +1838,11 @@ require([
         });
 
         existingRoutesLyr.on("apply-edits", (e) => {
-            console.log(e, typeof e)
-            e.then((p) => {
-                console.log(p)
-            })
+            if (!e.result == undefined) {
+                console.log(e);
+            } else {
+                console.log("unresolved")
+            }
         })
 
         $("#save-vertices").on("click", () => {
