@@ -1279,7 +1279,7 @@ require([
         function populateExistingRoutes () {
             mapView.when(() => {
                 const query = {
-                    where: "Program = 'Archer'", // Modify where clause depending on the user program
+                    where: "program = 'Archer'", // Modify where clause depending on the user program
                     outFields: ["*"]
                 };
 
@@ -1436,6 +1436,7 @@ require([
             $("#add-route-vertices")[0].disabled = true;
         });
 
+        // After add vertices is clicked, the sketch view model becomes active and starts creating a multipoint collection
         pointSketchViewModel.on("create", (e) => {
             if (e.state == "complete") {
                 console.log("complete feature");
@@ -1603,6 +1604,155 @@ require([
         $("#save").on("click", () => {
             $("#route-save-modal")[0].open = true;
         });
+
+        $("#route-save").on("click", () => {
+
+            // Get the user entered values for the route attributes
+            let rName = $("#route-name")[0].value;
+            let rArrival = $("#route-arr")[0].value;
+            let rDepart = $("#route-dep")[0].value;
+
+            let path = [];
+
+            let multipoint = new Multipoint ({
+                points: multipointVertices,
+                spatialReference: mapView.spatialReference
+            });
+
+            for (let i=0; i<multipoint.points.length; i++) {
+                let mapPt = multipoint.getPoint(i);
+                let coords = [mapPt.longitude, mapPt.latitude, mapPt.z];
+                path.push(coords);
+            }
+
+            let polyline = {
+                type: "polyline",
+                paths: path
+            };
+
+            let polylineGraphic = new Graphic ({
+                geometry: polyline,
+                attributes: {
+                    "route_name": rName,
+                    "departing_fac": rDepart,
+                    "arriving_fac": rArrival,
+                    "display_color": userLineColor,
+                    "program": "Archer" // Change this to match the program that is licensed
+                }
+            });
+
+            let rDistance = geometryEngine.geodesicLength(polylineGraphic.geometry, "nautical-miles");
+
+            polylineGraphic.attributes["route_distance"] = rDistance;
+
+            const edits = {
+                addFeatures: [polylineGraphic]
+            };
+
+            existingRoutesLyr
+                .applyEdits(edits)
+                .then((r) => {
+                    // Delete the current list of existing routes
+                    $("#existing-routes").empty();
+                    // Repopulate existing routes list with new values after 1 second delay
+                    setTimeout(() => {
+                        populateExistingRoutes();
+                    }, 1000);
+
+                    oid = r.addFeatureResults[0].objectId;
+
+                    selectExistingRoute(oid);
+
+                    mapView.graphics.removeAll();
+
+                    $("#route-name")[0].value = "";
+                    $("#route-arr")[0].value = "";
+                    $("#route-dep")[0].value = "";
+                    
+                    // Close modal
+                    // Reset vertices, sketch, table
+                    $("#route-save-modal")[0].open = false;
+                    $("#waypoint-table tbody tr").remove();
+                    $("#waypoint-list").css("display", "none");
+                    $("#save")[0].disabled = true;
+                    $("#route-toolbar").css("display", "none");
+
+                    multipointVertices = [];
+
+                    pntGraphicsLyr.removeAll();
+
+                    pointSketchViewModel.cancel();
+                });
+        });
+
+        //#region Select Existing Route
+
+        mapView.on("click", (e) => {
+            const opts = {
+                include: existingRoutesLyr
+            };
+
+            mapView.hitTest(evt, opts)
+                .then((r) => {
+                    if (r.results.length) {
+                        selectExistingRoute(r.results[0].graphic.attributes.OBJECTID, appConfig.activeView.type);
+                    }
+                });
+        });
+
+        function selectExistingRoute (objectId, dimensions) {
+            const query = {
+                where: "OBJECTID = " + objectId,
+                outFields: ["*"],
+                returnGeometry: true,
+                returnZ: true
+            };
+
+            existingRoutesLyr.queryFeatures(query)
+                .then((r) => {
+                    selectedFeature = r.features[0];
+
+                    if (dimensions == "2d") {
+                        mapView
+                            .goTo(selectedFeature.geometry.extent.expand(2))
+                            .then(() => {
+                                $("#waypoint-list").css("display", "block");
+
+                                selectedFeatureTable(selectedFeature.geometry.paths);
+
+                                selectedFeatureProfile(selectedFeature.geometry.paths);
+
+                                mapView.openPopup({
+                                    features: [selectedFeature]
+                                });
+                            })
+                            .catch((error) => {
+                                if (error.name != "AbortError") {
+                                    console.log(error);
+                                }
+                            });
+                    } else if (dimensions == "3d") {
+                        sceneView
+                            .goTo(selectedFeature.geometry.extent.expand(2))
+                            .then(() => {
+                                $("#waypoint-list").css("display", "block");
+
+                                selectedFeatureTable(selectedFeature.geometry.paths);
+
+                                selectedFeatureProfile(selectedFeature.geometry.paths);
+
+                                sceneView.openPopup({
+                                    features: [selectedFeature]
+                                });
+                            })
+                            .catch((error) => {
+                                if (error.name != "AbortError") {
+                                    console.log(error);
+                                }
+                            });
+                    }
+                });
+        }
 
     } 
 
