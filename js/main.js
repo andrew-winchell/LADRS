@@ -1731,8 +1731,6 @@ require([
                     $("#save-vertices").css("display", "block");
                     
                     editRouteAttributes();
-
-                    editRoutePath();
                 }
             }
         );
