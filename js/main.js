@@ -1587,6 +1587,7 @@ require([
             existingRoutesLyr
                 .applyEdits(edits)
                 .then((r) => {
+                    console.log($("#existing-routes").selectedItems);
                     // Delete the current list of existing routes
                     $("#existing-routes").empty();
                     // Repopulate existing routes list with new values after 1 second delay
