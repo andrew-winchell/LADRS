@@ -1821,7 +1821,7 @@ require([
                 newVertices = [],
                 i, j, cells;
 
-            for (i=0, j=rows.length; i<j; ++i) {
+            for (i=1, j=rows.length; i<=j; ++i) {
                 cells = rows[i].cells;
 
                 console.log(table,rows,cells)
