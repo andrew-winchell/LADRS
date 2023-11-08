@@ -1412,7 +1412,7 @@ require([
             tooltipOptions: { enabled: true }
         });
 
-        // Open Creator Toolbar
+        // Open Creator Toolbar and Color Picker
         $("#create-route").on("click", () => {
             $("#route-toolbar").css("display", "block");
             $("#color-picker-panel").css("display", "grid");
@@ -1421,5 +1421,174 @@ require([
             $("#waypoint-list").css("display", "none");
             mapView.popup.close();
         });
+
+        // Confirm the selected line color
+        $("#confirm-color").on("click", () => {
+            $("#add-route-vertices")[0].disabled = false;
+            userLineColor = $("#color-picker")[0].value;
+            $("#color-picker-panel").css("display", "none"); 
+        });
+
+        // Start adding route vertices
+        $("#add-route-vertices").on("click", () => {
+            mapView.focus();
+            pointSketchViewModel.create("multipoint", { hasZ: true });
+            $("#add-route-vertices")[0].disabled = true;
+        });
+
+        pointSketchViewModel.on("create", (e) => {
+            if (e.state == "complete") {
+                console.log("complete feature");
+            } else if (e.state == "start") {
+                $("#waypoint-table tbody tr").remove();
+
+                let coords = [e.toolEventInfo.added[0][0], e.toolEventInfo.added[0][1], 0];
+
+                createTableRow([coords]);
+
+                multipointVertices.push(coords);
+
+                $("#waypoint-list").css("display", "block");
+            } else if (e.state == "active") {
+                if (e.toolEventInfo.type == "vertex-add") {
+                    let coords = [e.toolEventInfo.added[0][0], e.toolEventInfo.added[0][1], 0];
+
+                    createTableRow([coords]);
+
+                    multipointVertices.push(coords);
+
+                    drawPath(multipointVertices);
+
+                    if (multipointVertices.length > 1) {
+                        $("#complete-route")[0].disabled = false;
+                    }
+
+                    $("#cancel-vertices")[0].disabled = false;
+                }
+            }
+        });
+
+        $("#waypoint-table").on("input", (e) => {
+            if (e.target.cellIndex == 3) {
+                // Check if z-values are non-negative numbers
+                // true = green & false = red
+                if (!isNaN(e.target.innerHTML) && parseFloat(e.target.innerHTML) >= 0) {
+                    e.target.bgColor = "#C6EFCE";
+                } else {
+                    e.target.bgColor = "#FFC7CE";
+                }
+            } else if (e.target.cellIndex == 2) {
+                // Check if y-values are numbers between -90 and 90
+                // true = green & false = red
+                if (!isNaN(e.target.innerHTML) && (parseFloat(e.target.innerHTML) >= -90 && parseFloat(e.target.innerHTML) <= 90)) {
+                    e.target.bgColor = "#C6EFCE";
+                } else {
+                    e.target.bgColor = "#FFC7CE";
+                }
+            } else if (e.target.cellIndex == 1) {
+                // Check if x-values are numbers between -180 and 180
+                // true = green & false = red
+                if (!isNaN(e.target.innerHTML) && (parseFloat(e.target.innerHTML) >= -180 && parseFloat(e.target.innerHTML) <= 180)) {
+                    e.target.bgColor = "#C6EFCE";
+                } else {
+                    e.target.bgColor = "#FFC7CE";
+                }
+            }
+
+            let table = document.getElementById("waypoint-table"),
+                rows = table.getElementsByTagName("tr"),
+                newVertices = [],
+                i, j, cells;
+            
+            for (i=0, j=rows.length; i<j; ++i) {
+                cells = rows[i].getElementsByTagName("td");
+                if (!cells.length) {
+                    continue;
+                }
+
+                let long = cells[1].innerHTML,
+                    lat = cells[2].innerHTML,
+                    alt = cells[3].innerHTML;
+
+                let point = new Point ({
+                    latitude: lat,
+                    longitude: long,
+                    z: alt/3.281,
+                    spatialReference: 3857
+                });
+
+                let coord = [point.x, point.y, point.z];
+
+                newVertices.push(coord);
+            }
+
+            multipointVertices = newVertices;
+
+            let polyline = new Polyline ({
+                hasZ: true,
+                spatialReference: mapView.spatialReference,
+                paths: multipointVertices
+            });
+
+            const graphic = new Graphic ({
+                geometry: polyline,
+                symbol: {
+                    type: "simple-line",
+                    color: userLineColor,
+                    width: "3",
+                    style: "short-dash"
+                }
+            });
+
+            drawPath(multipointVertices);
+
+            elevationProfile.input = graphic;
+        });
+
+        function createTableRow (vertice) {
+            let multipoint = new Multipoint ({
+                points: vertice,
+                spatialReference: mapView.spatialReference
+            });
+
+            let mapPt = multipoint.getPoint(0);
+
+            let nextRow = $("#waypoint-table tbody")[0].insertRow(-1);
+            let nextVert = newRow.insertCell(0);
+            let nextX = nextRow.insertCell(1);
+            let nextY = nextRow.insertCell(2);
+            let nextZ = nextRow.insertCell(3);
+
+            nextVert.innerHTML = nextRow.rowIndex;
+            nextX.innerHTML = mapPt.longitude.toFixed(6);
+            nextX.setAttribute("contentEditable", "true");
+            nextY.innerHTML = mapPt.latitude.toFixed(6);
+            nextY.setAttribute("contentEditable", "true");
+            nextZ.innerHTML = (mapPt.z * 3.281).toFixed(0);
+            nextZ.setAttribute("contentEditable", "true");
+        }
+
+        function drawPath (vertices) {
+            mapView.graphics.removeAll();
+
+            let polyline = new Polyline ({
+                hasZ: true,
+                spatialReference: mapView.spatialReference,
+                paths: vertices
+            });
+
+            const graphic = new Graphic ({
+                geometry: polyline,
+                symbol: {
+                    type: "simple-line",
+                    color: userLineColor,
+                    width: "3",
+                    style: "short-dash"
+                }
+            });
+
+            mapView.graphics.add(graphic);
+            elevationProfile.input = graphic;
+        }
     }
 )
