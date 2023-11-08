@@ -1822,7 +1822,7 @@ require([
                 i, j, cells;
 
             for (i=0, j=rows.length; i<j; ++i) {
-                cells = rows[i].getElementsByTagName("td");
+                cells = rows[i].cells;
 
                 console.log(table,rows,cells)
             
