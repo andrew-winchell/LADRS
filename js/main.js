@@ -1838,6 +1838,7 @@ require([
         });
 
         existingRoutesLyr.on("apply-edits", (e) => {
+            console.log(e, typeof e)
             e.then((p) => {
                 console.log(p)
             })
