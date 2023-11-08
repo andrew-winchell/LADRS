@@ -1300,6 +1300,7 @@ require([
         //#region Select Routes for Visibility
 
         $("#existing-routes").on("calciteListItemSelect", (e) => {
+            console.log(e);
             oid = parseInt(e.target.value);
             let routeColor, geom, routeBufferName;
             let routeSelected = e.target.selected;
