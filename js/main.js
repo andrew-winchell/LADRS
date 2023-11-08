@@ -1823,11 +1823,8 @@ require([
 
             console.log(table,rows)
 
-            for (i=0, j=rows.length; i<j; ++i) {
-                cells = rows[i].getElementByTagName("td");
-                if (!cells.length) {
-                    continue;
-                }
+            for (i=1, j=rows.length; i<j; ++i) {
+                cells = rows[i].cells;
             
                 let long = cells[1].innerHTML,
                     lat = cells[2].innerHTML,
