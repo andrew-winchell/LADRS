@@ -1692,6 +1692,8 @@ require([
                 });
         });
 
+        //#endregion
+
         //#region Select Existing Route
 
         mapView.on("click", (e) => {
@@ -1758,7 +1760,35 @@ require([
                                 }
                             });
                     }
+                });              
+        }
+
+        function selectedFeatureTable (vertices) {
+            $("#waypoint-table tbody tr").remove();
+
+            for (let v of vertices[0]) {
+                let point = new Point ({
+                    hasZ: true,
+                    x: v[0],
+                    y: v[1],
+                    z: v[2],
+                    spatialReference: mapView.spatialReference
                 });
+    
+                let nextRow = $("#waypoint-table tbody")[0].insertRow(-1);
+                let nextVert = nextRow.insertCell(0);
+                let nextX = nextRow.insertCell(1);
+                let nextY = nextRow.insertCell(2);
+                let nextZ = nextRow.insertCell(3);
+        
+                nextVert.innerHTML = nextRow.rowIndex
+                nextX.innerHTML = point.longitude.toFixed(6);
+                nextX.setAttribute("contentEditable", "true");
+                nextY.innerHTML = point.latitude.toFixed(6);
+                nextY.setAttribute("contentEditable", "true");
+                nextZ.innerHTML = (point.z * 3.281).toFixed(0);
+                nextZ.setAttribute("contentEditable", "true");
+            }
         }
 
     } 
