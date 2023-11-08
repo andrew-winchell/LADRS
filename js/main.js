@@ -1596,7 +1596,7 @@ require([
 
                     oid = r.addFeatureResults[0].objectId;
 
-                    selectExistingRoute(oid);
+                    selectExistingRoute(oid, dimensions);
 
                     mapView.graphics.removeAll();
 
