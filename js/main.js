@@ -1845,19 +1845,13 @@ require([
                 editor.viewModel.cancelWorkflow();
                 mapView.ui.remove(editor);
 
-                reactiveUtils.when(
-                    () => editor,
-                    (e) => {
-                        console.log(e);
-                    }
-                );
-
                 // Delete the current list of existing routes
                 $("#existing-routes").empty();
 
                 // Repopulate existing routes list with new values after 1 second delay
                 setTimeout(()=> {
                     populateExistingRoutes();
+                    mapView.popup.close();
                 }, 1000);
 
                 // Find and remove the buffer graphic for the route that was deleted
