@@ -1270,6 +1270,7 @@ require([
                 if (routeSelected == true) {
                     existingRoutesLyr.renderer.addUniqueValueInfo(
                         {
+                            label: objectId.toString(),
                             value: objectId,
                             symbol: {
                                 type: "simple-line",
@@ -1593,6 +1594,7 @@ require([
                 .applyEdits(edits)
                 .then((r) => {
 
+                    // Update the routes renderer with the new route
                     oid = r.addFeatureResults[0].objectId;
 
                     updateRouteRenderer(oid, true);
