@@ -1584,11 +1584,10 @@ require([
                 addFeatures: [polylineGraphic]
             };
 
-            console.log($("#existing-routes"));
-
             existingRoutesLyr
                 .applyEdits(edits)
                 .then((r) => {
+                    console.log($("#existing-routes")[0].selectedItems);
                     // Delete the current list of existing routes
                     $("#existing-routes").empty();
                     // Repopulate existing routes list with new values after 1 second delay
