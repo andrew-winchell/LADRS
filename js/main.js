@@ -1587,15 +1587,25 @@ require([
             existingRoutesLyr
                 .applyEdits(edits)
                 .then((r) => {
-                    console.log($("#existing-routes")[0].selectedItems);
+
+                    oid = r.addFeatureResults[0].objectId;
+                    let selectedArr = [oid];
+
+                    for (let i of $("#existing-routes")[0].selectedItems) {
+                        selectedArr.push(i.value);
+                    }
+        
+                    let wrappedInQuotes = selectedArr.map((oid) => `'${oid}'`);
+                    let itemString = wrappedInQuotes.join(",");
+        
+                    existingRoutesLyr.definitionExpression = "Program = 'Archer' AND OBJECTID IN (" + itemString + ")";
+
                     // Delete the current list of existing routes
                     $("#existing-routes").empty();
                     // Repopulate existing routes list with new values after 1 second delay
                     setTimeout(() => {
                         populateExistingRoutes();
                     }, 1000);
-
-                    oid = r.addFeatureResults[0].objectId;
 
                     selectExistingRoute(oid, appConfig.activeView.type);
 
