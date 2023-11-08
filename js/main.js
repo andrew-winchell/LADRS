@@ -1654,7 +1654,7 @@ require([
             mapView.hitTest(e, opts)
                 .then((r) => {
                     if (r.results.length) {
-                        oid = r.results[0].graphic.attributes.OBJECTID
+                        oid = r.results[0].graphic.attributes.OBJECTID;
                         selectExistingRoute(oid, appConfig.activeView.type);
                     }
                 });
@@ -1825,8 +1825,6 @@ require([
             for (i=1, j=rows.length; i<j; ++i) {
                 cells = rows[i].getElementsByTagName("td");
 
-                console.log(table,rows,cells)
-            
                 let long = cells[1].innerHTML,
                     lat = cells[2].innerHTML,
                     alt = cells[3].innerHTML;
@@ -1883,7 +1881,6 @@ require([
                             mapView
                                 .goTo(selectedFeature.geometry.extent.expand(2))
                                 .then(() => {
-                                    existingRoutesLyr.definitionExpression = "Program = 'Archer' AND OBJECTID = " + oid;
                                     $("#waypoint-list").css("display", "block");
                                     selectedFeatureTable(selectedFeature.geometry.paths);
                                     selectedFeatureProfile(selectedFeature.geometry.paths);
@@ -1895,6 +1892,9 @@ require([
                                     mapView.popup.open({
                                         features: [selectedFeature]
                                     });
+                                    
+                                    editor.viewModel.cancelWorkflow();
+                                    mapView.ui.remove(editor);
                                 })
                                 .catch((error) => {
                                     if (error.name != "AbortError") {
