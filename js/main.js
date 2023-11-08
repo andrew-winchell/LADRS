@@ -1837,13 +1837,8 @@ require([
             })
         });
 
-        existingRoutesLyr.on("apply-edits", (e) => {
-            e.when(() => {
-                if (e.edits.deleteFeatures) {
-                    editor.viewModel.cancelWorkflow();
-                    mapView.ui.remove(editor);
-                }
-            })
+        editor.on("click", (e) => {
+            console.log(e)
         });
 
         $("#save-vertices").on("click", () => {
