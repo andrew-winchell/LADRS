@@ -1815,6 +1815,96 @@ require([
             })
         });
 
+        $("#save-vertices").on("click", () => {
+            let table = document.getElementById("waypoint-table"),
+                rows = table.getElementsByTagName("tr"),
+                newVertices = [],
+                i, j, cells;
+
+            for (i=0, j=rows.length; i<j; ++i) {
+                cells = rows[i].getElementById("td");
+                if (!cells.length) {
+                    continue;
+                }
+            
+                let long = cells[1].innerHTML,
+                    lat = cells[2].innerHTML,
+                    alt = cells[3].innerHTML;
+                
+                let point = new Point ({
+                    latitude: lat,
+                    longitude: long,
+                    z: alt/3.281,
+                    spatialReference: 4326
+                });
+    
+                let coord = [point.x, point.y, point.z];
+    
+                newVertices.push(coord);
+
+                let polyline = {
+                    type: "polyline",
+                    paths: newVertices,
+                    hasZ: true
+                };
+        
+                let polylineGraphic = new Graphic ({
+                    geometry: polyline,
+                    attributes: {
+                        "OBJECTID": oid
+                    }
+                });
+
+                let rDistance = geometryEngine.geodesicLength(polylineGraphic.geometry, "nautical-miles");
+        
+                polylineGraphic.attributes["route_distance"] = rDistance;
+        
+                const edits = {
+                    updateFeatures: [polylineGraphic]
+                };
+                mapView.graphics.add(polylineGraphic);
+        
+                supernalRoutesLyr
+                    .applyEdits(edits)
+                    .then(() => { 
+                        drawPath(selectedFeature.geometry.paths);
+        
+                        const query = {
+                            where: "OBJECTID = " + oid,
+                            outFields: ["*"],
+                            returnGeometry: true,
+                            returnZ: true
+                        };
+            
+                        supernalRoutesLyr.queryFeatures(query)
+                            .then((results) => {
+                                selectedFeature = results.features[0];
+                                mapView
+                                    .goTo(selectedFeature.geometry.extent.expand(2))
+                                    .then(() => {
+                                        supernalRoutesLyr.definitionExpression = "OBJECTID = " + objectId;
+                                        $("#waypoint-list").css("display", "block");
+                                        selectedFeatureTable(selectedFeature.geometry.paths);
+                                        selectedFeatureProfile(selectedFeature.geometry.paths);
+                                        mapView.popup.dockEnabled = true;
+                                        mapView.popup.dockOptions = {
+                                            position: "bottom-right",
+                                            buttonEnabled: false
+                                        };
+                                        mapView.popup.open({
+                                            features: [selectedFeature]
+                                        });
+                                    })
+                                    .catch((error) => {
+                                        if (error.name != "AbortError") {
+                                            console.log(error);
+                                        }
+                                    });
+                            });
+                    });
+            }
+        })
+
         function editRouteAttributes () {
             if (!editor.activeWorflow) {
                 mapView.popup.visible = false;
