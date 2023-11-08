@@ -927,7 +927,6 @@ require([
             });
 
             layerList.on("trigger-action", (event) => {
-                console.log(event);
                 const id = event.action.id;
                 if (id === "item-details") {
                     window.open(event.item.layer.url);
@@ -1270,7 +1269,7 @@ require([
                 if (routeSelected == true) {
                     existingRoutesLyr.renderer.addUniqueValueInfo(
                         {
-                            label: objectId.toString(),
+                            label: objectId,
                             value: objectId,
                             symbol: {
                                 type: "simple-line",
