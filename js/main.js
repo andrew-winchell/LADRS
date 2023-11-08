@@ -1295,7 +1295,7 @@ require([
                                 }
                             },
                             attributes: {
-                                "route": routeBufferName
+                                "route": objectId
                             }
                         })
                     );
@@ -1307,7 +1307,7 @@ require([
 
                     // Find the graphic for the route that was deslected and remove the corresponding buffer
                     let removeGraphic = routeBuffer.graphics.find((g) => {
-                        return g.attributes.route === routeBufferName;
+                        return g.attributes.route === objectId;
                     });
                     routeBuffer.remove(removeGraphic);
                 }
@@ -1851,10 +1851,10 @@ require([
                 console.log(e.deletedFeatures)
 
                 // Find the graphic for the route that was deslected and remove the corresponding buffer
-                //let removeGraphic = routeBuffer.graphics.find((g) => {
-                //    return g.attributes.route === routeBufferName;
-                //});
-                //routeBuffer.remove(removeGraphic);
+                let removeGraphic = routeBuffer.graphics.find((g) => {
+                    return g.attributes.route === e.deletedFeatures[0].onjectId;
+                });
+                routeBuffer.remove(removeGraphic);
             }
         })
 
