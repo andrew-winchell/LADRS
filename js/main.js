@@ -1236,14 +1236,28 @@ require([
 
         $("#existing-routes").on("calciteListItemSelect", (e) => {
             oid = parseInt(e.target.value);
-            let routeColor, geom, routeBufferName;
-            let routeSelected = e.target.selected;
             let selectedArr = [];
 
+            updateRouteRenderer(oid);
+
+            for (let i of e.currentTarget.selectedItems) {
+                selectedArr.push(i.value);
+            }
+
+            let wrappedInQuotes = selectedArr.map((oid) => `'${oid}'`);
+            let itemString = wrappedInQuotes.join(",");
+
+            existingRoutesLyr.definitionExpression = "Program = 'Archer' AND OBJECTID IN (" + itemString + ")";
+        });
+
+        function updateRouteRenderer (objectId) {
+            let routeColor, geom, routeBufferName;
+            let routeSelected = e.target.selected;
+
             // Query routes for matching OID
-            existingRoutesLyr.queryFeatures (
+            existingRoutesLyr.queryFeatures(
                 {
-                    where: "OBJECTID = " + oid,
+                    where: "OBJECTID = " + objectId,
                     outFields: ["*"],
                     returnGeometry: true
                 }
@@ -1256,7 +1270,7 @@ require([
                 if (routeSelected == true) {
                     existingRoutesLyr.renderer.addUniqueValueInfo(
                         {
-                            value: oid,
+                            value: objectId,
                             symbol: {
                                 type: "simple-line",
                                 color: routeColor,
@@ -1287,7 +1301,7 @@ require([
                     );
                 } else {
                     // Remove the Unique Renderer Info for the deselected OID
-                    existingRoutesLyr.renderer.removeUniqueValueInfo(oid);
+                    existingRoutesLyr.renderer.removeUniqueValueInfo(objectId);
 
                     console.log(existingRoutesLyr.renderer);
 
@@ -1298,16 +1312,7 @@ require([
                     routeBuffer.remove(removeGraphic);
                 }
             });
-
-            for (let i of e.currentTarget.selectedItems) {
-                selectedArr.push(i.value);
-            }
-
-            let wrappedInQuotes = selectedArr.map((oid) => `'${oid}'`);
-            let itemString = wrappedInQuotes.join(",");
-
-            existingRoutesLyr.definitionExpression = "Program = 'Archer' AND OBJECTID IN (" + itemString + ")";
-        });
+        }
 
         //#endregion
    
@@ -1589,6 +1594,9 @@ require([
                 .then((r) => {
 
                     oid = r.addFeatureResults[0].objectId;
+
+                    updateRouteRenderer(oid);
+                    
                     let selectedArr = [oid];
 
                     for (let i of $("#existing-routes")[0].selectedItems) {
