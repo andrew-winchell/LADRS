@@ -1583,8 +1583,8 @@ require([
             const edits = {
                 addFeatures: [polylineGraphic]
             };
-            
-            console.log($("#existing-routes").selectedItems);
+
+            console.log($("#existing-routes"));
 
             existingRoutesLyr
                 .applyEdits(edits)
