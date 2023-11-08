@@ -1692,7 +1692,7 @@ require([
                 include: existingRoutesLyr
             };
 
-            mapView.hitTest(evt, opts)
+            mapView.hitTest(e, opts)
                 .then((r) => {
                     if (r.results.length) {
                         selectExistingRoute(r.results[0].graphic.attributes.OBJECTID, appConfig.activeView.type);
