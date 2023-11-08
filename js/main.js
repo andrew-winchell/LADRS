@@ -1816,6 +1816,13 @@ require([
             })
         });
 
+        existingRoutesLyr.on("apply-edits", (e) => {
+            if (e.edits.deleteFeatures) {
+                editor.viewModel.cancelWorkflow();
+                mapView.ui.remove(editor);
+            }
+        });
+
         $("#save-vertices").on("click", () => {
             let table = document.getElementById("waypoint-table"),
                 rows = table.getElementsByTagName("tr"),
