@@ -1654,7 +1654,8 @@ require([
             mapView.hitTest(e, opts)
                 .then((r) => {
                     if (r.results.length) {
-                        selectExistingRoute(r.results[0].graphic.attributes.OBJECTID, appConfig.activeView.type);
+                        oid = r.results[0].graphic.attributes.OBJECTID
+                        selectExistingRoute(oid, appConfig.activeView.type);
                     }
                 });
         });
@@ -1822,7 +1823,7 @@ require([
                 i, j, cells;
 
             for (i=1, j=rows.length; i<j; ++i) {
-                cells = rows[i].cells;
+                cells = rows[i].getElementsByTagName("td");
 
                 console.log(table,rows,cells)
             
@@ -1840,68 +1841,68 @@ require([
                 let coord = [point.x, point.y, point.z];
     
                 newVertices.push(coord);
-
-                let polyline = {
-                    type: "polyline",
-                    paths: newVertices,
-                    hasZ: true
-                };
-        
-                let polylineGraphic = new Graphic ({
-                    geometry: polyline,
-                    attributes: {
-                        "OBJECTID": oid
-                    }
-                });
-
-                let rDistance = geometryEngine.geodesicLength(polylineGraphic.geometry, "nautical-miles");
-        
-                polylineGraphic.attributes["route_distance"] = rDistance;
-        
-                const edits = {
-                    updateFeatures: [polylineGraphic]
-                };
-                mapView.graphics.add(polylineGraphic);
-        
-                existingRoutesLyr
-                    .applyEdits(edits)
-                    .then(() => { 
-                        drawPath(selectedFeature.geometry.paths);
-        
-                        const query = {
-                            where: "OBJECTID = " + oid,
-                            outFields: ["*"],
-                            returnGeometry: true,
-                            returnZ: true
-                        };
-            
-                        existingRoutesLyr.queryFeatures(query)
-                            .then((r) => {
-                                selectedFeature = r.features[0];
-                                mapView
-                                    .goTo(selectedFeature.geometry.extent.expand(2))
-                                    .then(() => {
-                                        existingRoutesLyr.definitionExpression = "Program = 'Archer' AND OBJECTID = " + oid;
-                                        $("#waypoint-list").css("display", "block");
-                                        selectedFeatureTable(selectedFeature.geometry.paths);
-                                        selectedFeatureProfile(selectedFeature.geometry.paths);
-                                        mapView.popup.dockEnabled = true;
-                                        mapView.popup.dockOptions = {
-                                            position: "bottom-right",
-                                            buttonEnabled: false
-                                        };
-                                        mapView.popup.open({
-                                            features: [selectedFeature]
-                                        });
-                                    })
-                                    .catch((error) => {
-                                        if (error.name != "AbortError") {
-                                            console.log(error);
-                                        }
-                                    });
-                            });
-                    });
             }
+
+            let polyline = {
+                type: "polyline",
+                paths: newVertices,
+                hasZ: true
+            };
+    
+            let polylineGraphic = new Graphic ({
+                geometry: polyline,
+                attributes: {
+                    "OBJECTID": oid
+                }
+            });
+
+            let rDistance = geometryEngine.geodesicLength(polylineGraphic.geometry, "nautical-miles");
+    
+            polylineGraphic.attributes["route_distance"] = rDistance;
+    
+            const edits = {
+                updateFeatures: [polylineGraphic]
+            };
+            mapView.graphics.add(polylineGraphic);
+    
+            existingRoutesLyr
+                .applyEdits(edits)
+                .then(() => { 
+                    drawPath(selectedFeature.geometry.paths);
+    
+                    const query = {
+                        where: "OBJECTID = " + oid,
+                        outFields: ["*"],
+                        returnGeometry: true,
+                        returnZ: true
+                    };
+        
+                    existingRoutesLyr.queryFeatures(query)
+                        .then((r) => {
+                            selectedFeature = r.features[0];
+                            mapView
+                                .goTo(selectedFeature.geometry.extent.expand(2))
+                                .then(() => {
+                                    existingRoutesLyr.definitionExpression = "Program = 'Archer' AND OBJECTID = " + oid;
+                                    $("#waypoint-list").css("display", "block");
+                                    selectedFeatureTable(selectedFeature.geometry.paths);
+                                    selectedFeatureProfile(selectedFeature.geometry.paths);
+                                    mapView.popup.dockEnabled = true;
+                                    mapView.popup.dockOptions = {
+                                        position: "bottom-right",
+                                        buttonEnabled: false
+                                    };
+                                    mapView.popup.open({
+                                        features: [selectedFeature]
+                                    });
+                                })
+                                .catch((error) => {
+                                    if (error.name != "AbortError") {
+                                        console.log(error);
+                                    }
+                                });
+                        });
+                });
         });
 
         function editRouteAttributes () {
