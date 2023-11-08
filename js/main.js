@@ -1846,7 +1846,7 @@ require([
                 // Repopulate existing routes list with new values after 1 second delay
                 setTimeout(()=> {
                     populateExistingRoutes();
-                }, 10);
+                }, 1000);
 
                 console.log(e.deletedFeatures)
 
