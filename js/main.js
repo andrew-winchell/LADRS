@@ -1774,6 +1774,32 @@ require([
             })
         });
 
+        function editRouteAttributes () {
+            if (!editor.activeWorflow) {
+                mapView.popup.visible = false;
+
+                editor.startUpdateWorkflowAtFeatureEdit(
+                    mapView.popup.selectedFeature
+                );
+
+                mapView.ui.add(editor, "bottom-right");
+            }
+
+            reactiveUtils.when(
+                () => editor.viewModel.state === "ready",
+                () => {
+                    mapView.ui.remove(editor);
+                    mapView.popup.open(
+                        {
+                            features: [selectedFeature],
+                            shouldFocus: true
+                        }
+                    );
+                    $("#save-vertices").css("display", "none");
+                }
+            );
+        }
+
         //#endregion
 
     } 
