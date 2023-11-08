@@ -1821,10 +1821,8 @@ require([
                 newVertices = [],
                 i, j, cells;
 
-            console.log(table,rows)
-
             for (i=0, j=rows.length; i<j; ++i) {
-                cells = rows[i].cells;
+                cells = rows[i].getElementsByTagName("td");
             
                 let long = cells[1].innerHTML,
                     lat = cells[2].innerHTML,
