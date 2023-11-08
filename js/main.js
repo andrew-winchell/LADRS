@@ -1719,6 +1719,27 @@ require([
             }
         }
 
+        function selectedFeatureProfile (vertices) {
+            let polyline = new Polyline ({
+                hasZ: true,
+                spatialReference: mapView.spatialReference,
+                paths: vertices
+            });
+
+            const graphic = new Graphic ({
+                geometry: polyline,
+                symbol: {
+                    type: "simple-line",
+                    color: "#008B8B",
+                    width: "0",
+                    style: "short-dash"
+                }
+            });
+
+            elevationProfile.input = graphic;
+            elevationProfile3D.input = graphic;
+        }
+
         //#endregion
 
         //#region Edit Existing Route
