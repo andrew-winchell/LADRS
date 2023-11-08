@@ -1287,7 +1287,7 @@ require([
                     .then((r) => {
                         for (let f of r.features) {
                             $("#existing-routes").append(
-                                "<calcite-list-item value'" + f.attributes.OBJECTID + "' label='" + f.attributes.route_name + "' description='Distance: " + parseFloat(f.attributes.route_distance).toFixed(2) + " nautical miles'></calcite-list-item>"
+                                "<calcite-list-item value='" + f.attributes.OBJECTID + "' label='" + f.attributes.route_name + "' description='Distance: " + parseFloat(f.attributes.route_distance).toFixed(2) + " nautical miles'></calcite-list-item>"
                             )
                         }
                         $("#existing-routes")[0].loading = false;
@@ -1300,7 +1300,6 @@ require([
         //#region Select Routes for Visibility
 
         $("#existing-routes").on("calciteListItemSelect", (e) => {
-            console.log(e);
             oid = parseInt(e.target.value);
             let routeColor, geom, routeBufferName;
             let routeSelected = e.target.selected;
