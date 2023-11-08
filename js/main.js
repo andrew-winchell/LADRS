@@ -1838,20 +1838,29 @@ require([
         });
 
         existingRoutesLyr.on("edits", (e) => {
+            // After a route is deleted
             if (e.deletedFeatures.length > 0) {
+
+                // Close editor widget
                 editor.viewModel.cancelWorkflow();
                 mapView.ui.remove(editor);
-                mapView.popup.close();
+
+                reactiveUtils.when(
+                    () => editor,
+                    (e) => {
+                        console.log(e);
+                    }
+                );
+
                 // Delete the current list of existing routes
                 $("#existing-routes").empty();
+
                 // Repopulate existing routes list with new values after 1 second delay
                 setTimeout(()=> {
                     populateExistingRoutes();
                 }, 1000);
 
-                console.log(e.deletedFeatures)
-
-                // Find the graphic for the route that was deslected and remove the corresponding buffer
+                // Find and remove the buffer graphic for the route that was deleted
                 let removeGraphic = routeBuffer.graphics.find((g) => {
                     return g.attributes.route === e.deletedFeatures[0].objectId;
                 });
