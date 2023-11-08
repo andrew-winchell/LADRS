@@ -1816,7 +1816,9 @@ require([
             })
         });
 
-        console.log(editor)
+        existingRoutesLyr.on("edits", (e) => {
+            console.log(e);
+        });
 
         $("#save-vertices").on("click", () => {
             let table = document.getElementById("waypoint-table"),
