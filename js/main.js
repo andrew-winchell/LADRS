@@ -1841,6 +1841,7 @@ require([
             if (e.deletedFeatures.length > 0) {
                 editor.viewModel.cancelWorkflow();
                 mapView.ui.remove(editor);
+                mapView.popup.close();
                 // Delete the current list of existing routes
                 $("#existing-routes").empty();
                 // Repopulate existing routes list with new values after 1 second delay
