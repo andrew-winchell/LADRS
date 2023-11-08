@@ -1852,7 +1852,7 @@ require([
 
                 // Find the graphic for the route that was deslected and remove the corresponding buffer
                 let removeGraphic = routeBuffer.graphics.find((g) => {
-                    return g.attributes.route === e.deletedFeatures[0].onjectId;
+                    return g.attributes.route === e.deletedFeatures[0].objectId;
                 });
                 routeBuffer.remove(removeGraphic);
             }
