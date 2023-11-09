@@ -1854,6 +1854,7 @@ require([
                 },
                 snappingOptions: {
                     enabled: true,
+                    selfEnabled: false,
                     featureSources: [
                         {
                             layer: navaidsLyr,
@@ -2068,6 +2069,7 @@ require([
                 },
                 snappingOptions: {
                     enabled: true,
+                    selfEnabled: false,
                     featureSources: [
                         {
                             layer: navaidsLyr,
