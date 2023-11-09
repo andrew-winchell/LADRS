@@ -73,6 +73,9 @@ require([
                 "SERVCITY",
                 "STATE"
             ],
+            elevationInfo: {
+                mode: "on-the-ground"
+            },
             popupTemplate: {
                 title: "Airports",
                 content: [
@@ -889,7 +892,7 @@ require([
         // Place in left pane layer-list div
         // Add custom actions for legend and item details
         let layerList;
-        
+
         mapView.when(() => {
             layerList = new LayerList({
                 view: mapView,
