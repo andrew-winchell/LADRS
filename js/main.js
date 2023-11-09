@@ -2086,6 +2086,7 @@ require([
                     ]
                 },
                 tooltipOptions: { enabled: true },
+                labelOptions: { enabled: true },
                 container: document.createElement("div"),
                 layerInfos: [
                     {
