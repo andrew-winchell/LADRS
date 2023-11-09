@@ -359,6 +359,9 @@ require([
                     }
                 ]
             },
+            elevationInfo: {
+                mode: "on-the-ground"
+            },
             minScale: 1500000
         });
     
