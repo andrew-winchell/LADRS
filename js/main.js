@@ -2120,7 +2120,7 @@ require([
                 ]
             });
 
-            editor.labelOptions.elevation.units = "feet";
+            editor.tooltipOptions.elevation.units = "feet";
             console.log(editor.labelOptions);
         });
 
