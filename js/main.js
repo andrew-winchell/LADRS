@@ -2120,8 +2120,8 @@ require([
                 ]
             });
 
-            editor.tooltipOptions.elevation.units = "nautical-miles";
-            console.log(editor.tooltipOptions.elevation);
+            editor.labelOptions.elevation.units = "feet";
+            console.log(editor.labelOptions);
         });
 
         function editRouteAttributes3d () {
