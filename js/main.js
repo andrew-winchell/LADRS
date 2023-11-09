@@ -1107,6 +1107,8 @@ require([
             appConfig.activeView.container = null;
         
             if (is3D) {
+                layerList.view = mapView;
+                
                 appConfig.mapView.viewpoint = activeViewpoint;
                 appConfig.mapView.container = appConfig.container;
                
