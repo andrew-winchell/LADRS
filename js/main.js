@@ -2120,7 +2120,6 @@ require([
                 ]
             });
 
-            editor.tooltipOptions.elevation.mode = "relative-to-scene";
             console.log(editor.tooltipOptions.elevation);
         });
 
