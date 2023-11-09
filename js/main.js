@@ -2116,7 +2116,9 @@ require([
                         }
                     }
                 ]
-            })
+            });
+
+            console.log(editor);
         });
 
         function editRouteAttributes3d () {
