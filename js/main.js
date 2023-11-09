@@ -888,8 +888,10 @@ require([
         // After map load, create a customized Layer List widget
         // Place in left pane layer-list div
         // Add custom actions for legend and item details
+        let layerList;
+        
         mapView.when(() => {
-            const layerList = new LayerList({
+            layerList = new LayerList({
                 view: mapView,
                 container: "layer-list",
                 listItemCreatedFunction: (event) => {
@@ -1112,7 +1114,7 @@ require([
                 $("#elevation-profile3d").css("display", "none");
                 $("#create-route").css("display", "block")
             } else {
-                console.log(mapView.ui);
+                layerList.view = sceneView;
 
                 appConfig.sceneView.viewpoint = activeViewpoint;
                 appConfig.sceneView.container = appConfig.container;
