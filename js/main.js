@@ -2120,7 +2120,7 @@ require([
                 ]
             });
 
-            console.log(editor.tooltipOptions);
+            console.log(editor.tooltipOptions.elevation);
         });
 
         function editRouteAttributes3d () {
