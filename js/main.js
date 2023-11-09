@@ -2045,6 +2045,8 @@ require([
                     $("#save-vertices").css("display", "none");
                 }
             );
+
+            console.log(mapView.popup.selectedFeature);
         }
 
         // Editing in 3D
