@@ -2118,7 +2118,7 @@ require([
                 ]
             });
 
-            console.log(editor);
+            console.log(editor.tooltipOptions);
         });
 
         function editRouteAttributes3d () {
