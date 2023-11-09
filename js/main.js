@@ -558,7 +558,15 @@ require([
 
         const sceneView = new SceneView ({
             map: map,
-            container: "inset-div"
+            container: "inset-div",
+            popupEnabled: true,
+            popup: { // popup options when any feature layer is clicked on the map
+                dockEnabled: true,
+                dockOptions: {
+                    position: "bottom-right",
+                    breakpoint: false
+                }
+            }
         });
 
         const appConfig = {
@@ -1108,7 +1116,7 @@ require([
         
             if (is3D) {
                 layerList.view = mapView;
-                
+
                 appConfig.mapView.viewpoint = activeViewpoint;
                 appConfig.mapView.container = appConfig.container;
                
