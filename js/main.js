@@ -2120,6 +2120,7 @@ require([
                 ]
             });
 
+            editor.tooltipOptions.elevation.units = "nautical-miles";
             console.log(editor.tooltipOptions.elevation);
         });
 
