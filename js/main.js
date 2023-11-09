@@ -1711,6 +1711,20 @@ require([
                 });
         });
 
+        sceneView.on("click", (e) => {
+            const opts = {
+                include: existingRoutesLyr
+            };
+
+            sceneView.hitTest(e, opts)
+                .then((r) => {
+                    if (r.results.length) {
+                        oid = r.results[0].graphic.attributes.OBJECTID;
+                        selectExistingRoute(oid, appConfig.activeView.type);
+                    }
+                });
+        });
+
         function selectExistingRoute (objectId, dimensions) {
             const query = {
                 where: "OBJECTID = " + objectId,
