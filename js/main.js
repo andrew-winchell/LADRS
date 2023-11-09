@@ -1832,6 +1832,7 @@ require([
 
         //#region Edit Existing Route
 
+        // Editing in 2D
         reactiveUtils.on(
             () => mapView.popup,
             "trigger-action",
@@ -2042,6 +2043,77 @@ require([
                 }
             );
         }
+
+        // Editing in 3D
+        reactiveUtils.on(
+            () => sceneView.popup,
+            "trigger-action",
+            (e) => {
+                if (e.action.id === "edit-attributes") {
+                    $("#save-vertices").css("display", "block");
+                    
+                    editRouteAttributes();
+                }
+            }
+        );
+
+        sceneView.when(() => {
+            editor = new Editor ({
+                view: sceneView,
+                visibleElements: {
+                    snappingControls: false,
+                    sketchTooltipControls: false
+                },
+                snappingOptions: {
+                    enabled: true,
+                    featureSources: [
+                        {
+                            layer: navaidsLyr,
+                            enabled: true
+                        },
+                        {
+                            layer: fixesLyr,
+                            enabled: true
+                        },
+                        {
+                            layer: airportsLyr,
+                            enabled: true
+                        },
+                        {
+                            layer: vertiportsLyr,
+                            enabled: true
+                        }
+                    ]
+                },
+                container: document.createElement("div"),
+                layerInfos: [
+                    {
+                        layer: existingRoutesLyr,
+                        formTemplate: {
+                            title: "Route Attributes",
+                            description: "Enter or Modify all route attributes below.",
+                            elements: [
+                                {
+                                    type: "field",
+                                    fieldName: "route_name",
+                                    label: "Route Name"
+                                },
+                                {
+                                    type: "field",
+                                    fieldName: "departing_fac",
+                                    label: "Departing Facility"
+                                },
+                                {
+                                    type: "field",
+                                    fieldName: "arriving_fac",
+                                    label: "Arriving Facility"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            })
+        });
 
         //#endregion
 
