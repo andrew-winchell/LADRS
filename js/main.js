@@ -1849,6 +1849,7 @@ require([
                 $("#existing-routes").empty();
 
                 // Repopulate existing routes list with new values after 1 second delay
+                // Close the deleted routes popup
                 setTimeout(()=> {
                     populateExistingRoutes();
                     mapView.popup.close();
@@ -1860,7 +1861,7 @@ require([
                 });
                 routeBuffer.remove(removeGraphic);
             }
-        })
+        });
 
         $("#save-vertices").on("click", () => {
             let table = document.getElementById("waypoint-table"),
