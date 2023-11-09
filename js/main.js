@@ -2117,7 +2117,7 @@ require([
 
         function editRouteAttributes3d () {
             if (!editor.activeWorflow) {
-                mapView.popup.visible = false;
+                sceneView.popup.visible = false;
 
                 editor.startUpdateWorkflowAtFeatureEdit(
                     sceneView.popup.selectedFeature
