@@ -2052,7 +2052,7 @@ require([
                 if (e.action.id === "edit-attributes") {
                     $("#save-vertices").css("display", "block");
                     
-                    editRouteAttributes();
+                    editRouteAttributes3d();
                 }
             }
         );
@@ -2114,6 +2114,32 @@ require([
                 ]
             })
         });
+
+        function editRouteAttributes3d () {
+            if (!editor.activeWorflow) {
+                mapView.popup.visible = false;
+
+                editor.startUpdateWorkflowAtFeatureEdit(
+                    sceneView.popup.selectedFeature
+                );
+
+                sceneView.ui.add(editor, "bottom-right");
+            }
+
+            reactiveUtils.when(
+                () => editor.viewModel.state === "ready",
+                () => {
+                    sceneView.ui.remove(editor);
+                    sceneView.popup.open(
+                        {
+                            features: [selectedFeature],
+                            shouldFocus: true
+                        }
+                    );
+                    $("#save-vertices").css("display", "none");
+                }
+            );
+        }
 
         //#endregion
 
