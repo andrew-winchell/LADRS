@@ -1101,22 +1101,32 @@ require([
             if (is3D) {
                 appConfig.mapView.viewpoint = activeViewpoint;
                 appConfig.mapView.container = appConfig.container;
+               
                 map.basemap = "gray-vector";
+
                 to2DSymbology();
+
                 appConfig.activeView = appConfig.mapView;
+
                 $("#elevation-profile").css("display", "block");
                 $("#elevation-profile3d").css("display", "none");
                 $("#create-route").css("display", "block")
             } else {
+                console.log(mapView.ui);
+
                 appConfig.sceneView.viewpoint = activeViewpoint;
                 appConfig.sceneView.container = appConfig.container;
+
                 map.basemap = new Basemap({
                     portalItem: {
                         id: "0560e29930dc4d5ebeb58c635c0909c9"
                     }
                 });
+
                 to3DSymbology();
+
                 appConfig.activeView = appConfig.sceneView;
+
                 $("#elevation-profile").css("display", "none");
                 $("#elevation-profile3d").css("display", "block");
                 $("#create-route").css("display", "none")
