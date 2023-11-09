@@ -2119,9 +2119,6 @@ require([
                     }
                 ]
             });
-
-            editor.tooltipOptions.elevation.units = "feet";
-            console.log(editor.labelOptions);
         });
 
         function editRouteAttributes3d () {
