@@ -1642,6 +1642,30 @@ require([
                 });
         });
 
+        $("#cancel-vertices").on("click", () => {
+            cancelRouteCreation();
+        });
+
+        function cancelRouteCreation () {
+            pointSketchViewModel.cancel();
+            multipointVertices = [];
+
+            $("#waypoint-table tbody tr").remove(); // remove table rows
+            $("#waypoint-list").css("display", "none"); // hide table
+
+            // Reset route creation toolbar buttons and hide
+            $("#route-toolbar").css("display", "none");
+            $("#color-picker-panel").css("display", "none");
+            $("#save")[0].disabled = true;
+            $("#complete-route")[0].disabled = true;
+            $("#edit-vertices")[0].disabled = true;
+            $("#cancel-vertices")[0].disabled = true;
+            $("#add-route-vertices")[0].disabled = false;
+
+            mapView.graphics.removeAll(); // remove incomplete route
+            elevationProfile.input = null; // clear elevation profile graphic
+        }
+
         //#endregion
 
         //#region Select Existing Route
